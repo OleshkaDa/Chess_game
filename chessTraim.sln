@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chessTraim", "chessTraim\chessTraim.csproj", "{EC3EFF58-1C31-4BA9-81E0-1D8DE0F774C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{5A8BFDE9-8F4A-4B5F-9EDB-40A02360D661}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC3EFF58-1C31-4BA9-81E0-1D8DE0F774C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3EFF58-1C31-4BA9-81E0-1D8DE0F774C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3EFF58-1C31-4BA9-81E0-1D8DE0F774C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3EFF58-1C31-4BA9-81E0-1D8DE0F774C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A8BFDE9-8F4A-4B5F-9EDB-40A02360D661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A8BFDE9-8F4A-4B5F-9EDB-40A02360D661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A8BFDE9-8F4A-4B5F-9EDB-40A02360D661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A8BFDE9-8F4A-4B5F-9EDB-40A02360D661}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C127945-5F29-4E73-967E-9E596A0810D0}
+	EndGlobalSection
+EndGlobal
