@@ -116,9 +116,21 @@ namespace chessTraim
             else
                 serializer = new XmlGameSerializer();
 
+            //var gameWindow = new GameWindow(_currentGame!, _saveFilePath, serializer);
+            //gameWindow.Owner = this;
+            //gameWindow.ShowDialog();
+
+            //CheckContinueButtonState();
+
             var gameWindow = new GameWindow(_currentGame!, _saveFilePath, serializer);
+
             gameWindow.Owner = this;
+
+            this.Hide();
+
             gameWindow.ShowDialog();
+
+            this.Show();
 
             CheckContinueButtonState();
         }

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Model.Core.GameLogic;
+using Model.Core.Interfaces;
+using Model.Data.Serialization;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Model.Core.GameLogic;
-using Model.Core.Interfaces;
-using Model.Data.Serialization;
+using System.Windows.Media.Imaging;
 
 namespace chessTraim
 {
@@ -53,6 +54,15 @@ namespace chessTraim
                     button.SetValue(Grid.ColumnProperty, col);
                     button.FontSize = 32;
                     button.FontFamily = new FontFamily("Segoe UI Symbol");
+
+                    button.Padding = new Thickness(0);
+
+                    button.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+
+                    button.VerticalContentAlignment = VerticalAlignment.Stretch;
+
+                    button.BorderThickness = new Thickness(0);
+
                     button.Background = (row + col) % 2 == 0 ? LightCellBrush : DarkCellBrush;
                     button.Click += Cell_Click;
                     ChessBoardGrid.Children.Add(button);
@@ -340,7 +350,14 @@ namespace chessTraim
 
                 IPiece piece = _game.Board[row, col];
 
-                button.Content = GetPieceSymbol(piece);
+                if (piece == null)
+                {
+                    button.Content = "";
+                }
+                else
+                {
+                    button.Content = GetPieceImage(piece);
+                }
 
                 bool isLightCell = (row + col) % 2 == 0;
 
@@ -379,23 +396,61 @@ namespace chessTraim
             }
         }
 
-        private string GetPieceSymbol(IPiece? piece)
+        private Image GetPieceImage(IPiece piece)
         {
-            if (piece == null) return "";
+            string color = "";
 
-            string type = piece.GetType().Name;
-            bool isWhite = piece.Color == PieceColor.White;
-
-            return type switch
+            if (piece.Color == PieceColor.White)
             {
-                "Pawn" => isWhite ? "♙" : "♟",
-                "Rook" => isWhite ? "♖" : "♜",
-                "Knight" => isWhite ? "♘" : "♞",
-                "Bishop" => isWhite ? "♗" : "♝",
-                "Queen" => isWhite ? "♕" : "♛",
-                "King" => isWhite ? "♔" : "♚",
-                _ => "?"
-            };
+                color = "white";
+            }
+            else
+            {
+                color = "black";
+            }
+
+            string fileName = "";
+
+            switch (piece.GetType().Name)
+            {
+                case "Pawn":
+                    fileName = "chess-pawn-" + color + ".png";
+                    break;
+
+                case "Rook":
+                    fileName = "chess-rook-" + color + ".png";
+                    break;
+
+                case "Knight":
+                    fileName = "chess-knight-" + color + ".png";
+                    break;
+
+                case "Bishop":
+                    fileName = "chess-bishop-" + color + ".png";
+                    break;
+
+                case "Queen":
+                    fileName = "chess-queen-" + color + ".png";
+                    break;
+
+                case "King":
+                    fileName = "chess-king-" + color + ".png";
+                    break;
+            }
+
+            Image image = new Image();
+
+            image.Source = new BitmapImage(
+                new Uri(
+                    "pack://application:,,,/Images/" + fileName
+                )
+            );
+
+            image.Stretch = Stretch.Uniform;
+            image.Margin = new Thickness(0);
+            image.HorizontalAlignment = HorizontalAlignment.Center;
+            image.VerticalAlignment = VerticalAlignment.Center;
+            return image;
         }
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
