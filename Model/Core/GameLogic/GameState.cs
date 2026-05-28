@@ -90,6 +90,23 @@ namespace Model.Core.GameLogic
 
             if (piece.CanMoveTo(toRow, toCol, Board))
             {
+                IPiece targetPiece = Board[toRow, toCol];
+
+                if (targetPiece is King)
+                {
+                    IsGameOver = true;
+
+                    if (piece.Color == PieceColor.White)
+                    {
+                        Winner = "Белые";
+                    }
+                    else
+                    {
+                        Winner = "Черные";
+                    }
+
+                    return true;
+                }
                 Move move = new Move(
                     fromRow,
                     fromCol,

@@ -18,8 +18,13 @@ namespace chessTraim
         private Button? _selectedButton;
         private (int Row, int Col)? _selectedPosition;
 
-        private readonly Brush LightCellBrush = new SolidColorBrush(Color.FromRgb(240, 217, 181));
-        private readonly Brush DarkCellBrush = new SolidColorBrush(Color.FromRgb(181, 136, 99));
+        //private readonly Brush LightCellBrush = new SolidColorBrush(Color.FromRgb(240, 217, 181));
+        //private readonly Brush DarkCellBrush = new SolidColorBrush(Color.FromRgb(181, 136, 99));
+        private readonly Brush LightCellBrush =
+    new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DEB887"));
+
+        private readonly Brush DarkCellBrush =
+            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A0522D"));
         private readonly Brush HighlightBrush = new SolidColorBrush(Color.FromRgb(120, 200, 120));
 
         public GameWindow(GameState game, string saveFilePath, GameSerializerBase serializer)
@@ -63,7 +68,20 @@ namespace chessTraim
 
                     button.BorderThickness = new Thickness(0);
 
-                    button.Background = (row + col) % 2 == 0 ? LightCellBrush : DarkCellBrush;
+                    //button.Background = Brushes.Transparent;
+                    bool isLightCell = (row + col) % 2 == 0;
+
+                    if (isLightCell)
+                    {
+                        button.Background = LightCellBrush;
+                    }
+                    else
+                    {
+                        button.Background = DarkCellBrush;
+                    }
+
+
+                    button.BorderThickness = new Thickness(0);
                     button.Click += Cell_Click;
                     ChessBoardGrid.Children.Add(button);
                 }
@@ -304,7 +322,20 @@ namespace chessTraim
                 _selectedButton.Background = Brushes.Gold;
             }
         }
+        //private void ClearHighlights()
+        //{
+        //    for (int i = 0; i < ChessBoardGrid.Children.Count; i++)
+        //    {
+        //        Button btn = ChessBoardGrid.Children[i] as Button;
 
+        //        if (btn == null)
+        //        {
+        //            continue;
+        //        }
+
+        //        btn.Background = Brushes.Transparent;
+        //    }
+        //}
         private void ClearHighlights()
         {
             for (int i = 0; i < ChessBoardGrid.Children.Count; i++)
@@ -358,7 +389,7 @@ namespace chessTraim
                 {
                     button.Content = GetPieceImage(piece);
                 }
-
+                //button.Background = Brushes.Transparent;
                 bool isLightCell = (row + col) % 2 == 0;
 
                 if (isLightCell)
@@ -374,28 +405,42 @@ namespace chessTraim
 
         private void UpdateUI()
         {
-            TurnTextBlock.Text = $"Ход: {(_game.CurrentTurn == PieceColor.White ? "Белые ♔" : "Чёрные ♚")}";
-
-            if (_game.IsInCheck(_game.CurrentTurn))
+            if (_game.CurrentTurn == PieceColor.White)
             {
-                CheckTextBlock.Text = "ШАХ!";
+                TurnTextBlock.Text = "Белые";
             }
             else
             {
-                CheckTextBlock.Text = "";
+                TurnTextBlock.Text = "Черные";
+            }
+
+            if (_game.IsInCheck(_game.CurrentTurn))
+            {
+                TurnTextBlock.Text += "  -  CHECK!";
             }
 
             if (_game.IsGameOver)
             {
-                GameOverTextBlock.Text = _game.Winner == "Ничья" ? "НИЧЬЯ!" : $"ПОБЕДА: {_game.Winner}!";
-                GameOverTextBlock.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                GameOverTextBlock.Visibility = Visibility.Collapsed;
+                if (_game.Winner == "Ничья")
+                {
+                    MessageBox.Show(
+                        "Ничья",
+                        "GAME OVER"
+                    );
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Победитель: " + _game.Winner,
+                        "GAME OVER"
+                    );
+                }
+
+                Close();
+
+                return;
             }
         }
-
         private Image GetPieceImage(IPiece piece)
         {
             string color = "";
@@ -414,29 +459,106 @@ namespace chessTraim
             switch (piece.GetType().Name)
             {
                 case "Pawn":
-                    fileName = "chess-pawn-" + color + ".png";
+                    fileName = color == "white"
+                        ? "Pawn_w.png"
+                        : "Pawn_b.png";
                     break;
 
                 case "Rook":
-                    fileName = "chess-rook-" + color + ".png";
+                    fileName = color == "white"
+                        ? "Rook_w.png"
+                        : "Rook_b.png";
                     break;
 
                 case "Knight":
-                    fileName = "chess-knight-" + color + ".png";
+                    fileName = color == "white"
+                        ? "Knight_w.png"
+                        : "Knight_b.png";
                     break;
 
                 case "Bishop":
-                    fileName = "chess-bishop-" + color + ".png";
+                    fileName = color == "white"
+                        ? "Bishop_w.png"
+                        : "Bishop_b.png";
                     break;
 
                 case "Queen":
-                    fileName = "chess-queen-" + color + ".png";
+                    fileName = color == "white"
+                        ? "Queen_w.png"
+                        : "Queen_b.png";
                     break;
 
                 case "King":
-                    fileName = "chess-king-" + color + ".png";
+                    fileName = color == "white"
+                        ? "King_w.png"
+                        : "King_b.png";
                     break;
             }
+            //switch (piece.GetType().Name)
+            //{
+            //    case "Pawn":
+            //        fileName = color == "white"
+            //            ? "WhitePawn.png"
+            //            : "BlackPawn.png";
+            //        break;
+
+            //    case "Rook":
+            //        fileName = color == "white"
+            //            ? "WhiteRook.png"
+            //            : "BlackRook.png";
+            //        break;
+
+            //    case "Knight":
+            //        fileName = color == "white"
+            //            ? "WhiteKnight.png"
+            //            : "BlackKnight.png";
+            //        break;
+
+            //    case "Bishop":
+            //        fileName = color == "white"
+            //            ? "WhiteBishop.png"
+            //            : "BlackBishop.png";
+            //        break;
+
+            //    case "Queen":
+            //        fileName = color == "white"
+            //            ? "WhiteQueen.png"
+            //            : "BlackQueen.png";
+            //        break;
+
+            //    case "King":
+            //        fileName = color == "white"
+            //            ? "WhiteKing.png"
+            //            : "BlackKing.png";
+            //        break;
+            //}
+
+            //switch (piece.GetType().Name)
+            //{
+            //    case "Pawn":
+            //        fileName = "chess-pawn-" + color + ".png";
+            //        break;
+
+            //    case "Rook":
+            //        fileName = "chess-rook-" + color + ".png";
+            //        break;
+
+            //    case "Knight":
+            //        fileName = "chess-knight-" + color + ".png";
+            //        break;
+
+            //    case "Bishop":
+            //        fileName = "chess-bishop-" + color + ".png";
+            //        break;
+
+            //    case "Queen":
+            //        fileName = "chess-queen-" + color + ".png";
+            //        break;
+
+            //    case "King":
+            //        fileName = "chess-king-" + color + ".png";
+            //        break;
+            //}
 
             Image image = new Image();
 

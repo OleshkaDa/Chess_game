@@ -16,4 +16,10 @@
 		<Resource Include="Images\*.png" />
 	</ItemGroup>
 
+	<ItemGroup>
+
+		<Resource Include="Fonts\Hardpixel.OTF" />
+
+	</ItemGroup>
+
 </Project>

@@ -13,7 +13,7 @@
         <!-- ФОН -->
         <Grid.Background>
 
-            <ImageBrush ImageSource="Images/board.png"
+            <ImageBrush ImageSource="Images/Background.png"
                         Stretch="UniformToFill"
                         Opacity="0.20"/>
 
@@ -22,7 +22,7 @@
         <!-- ЦЕНТРАЛЬНАЯ ПАНЕЛЬ -->
         <Border Width="500"
                 Height="500"
-                Background="#AAFFFFFF"
+                Background="#DEB887"
                 CornerRadius="25"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
@@ -34,29 +34,25 @@
                 <TextBlock Text="ШАХМАТЫ"
                            FontSize="48"
                            FontWeight="Bold"
-                           FontFamily="Oswald"
+                           FontFamily="./Fonts/Hardpixel.OTF#Hardpixel"
                            Foreground="#222222"
-                           Margin="0,20,0,40"
-                           HorizontalAlignment="Center"/>
+                           Margin="0,20,0,10"
+                           HorizontalAlignment="Center" RenderTransformOrigin="0.5,1.056" Height="58"/>
 
                 <!-- НОВАЯ ИГРА -->
                 <Button Name="NewGameButton"
                         Content="Новая игра"
                         Width="320"
-                        Height="65"
+                        Height="90"
                         FontSize="24"
-                        FontFamily="Oswald"
-                        Margin="0,10"
+                        FontFamily="./Fonts/#Hardpixel"
+                        Margin="0,10,0,-10"
                         Click="NewGameButton_Click"
-                        Cursor="Hand">
+                        Cursor="Hand" RenderTransformOrigin="0.502,0.896">
 
                     <Button.Style>
 
                         <Style TargetType="Button">
-
-                            <Setter Property="Background" Value="#66FFFFFF"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="#222222"/>
 
                             <Setter Property="Template">
 
@@ -64,27 +60,29 @@
 
                                     <ControlTemplate TargetType="Button">
 
-                                        <Border x:Name="border"
-                                                Background="{TemplateBinding Background}"
-                                                CornerRadius="18">
+                                        <Grid>
 
-                                            <ContentPresenter HorizontalAlignment="Center"
-                                                              VerticalAlignment="Center"/>
+                                            <Image x:Name="bg"
+                                   Source="Images/Button.png"
+                                   Stretch="Fill"/>
 
-                                        </Border>
+                                            <TextBlock Text="Играть"
+                                       FontFamily="./Fonts/Hardpixel.OTF#Hardpixel"
+                                       FontSize="32"
+                                       Foreground="#F5D7A1"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                                        </Grid>
 
                                         <ControlTemplate.Triggers>
 
-                                            <!-- HOVER -->
+                                            <Trigger Property="IsMouseOver"
+                                     Value="True">
 
-                                            <Trigger Property="IsMouseOver" Value="True">
-
-                                                <Setter TargetName="border"
-                                                        Property="Background"
-                                                        Value="#99FFFFFF"/>
-
-                                                <Setter Property="FontSize"
-                                                        Value="27"/>
+                                                <Setter TargetName="bg"
+                                        Property="Opacity"
+                                        Value="0.85"/>
 
                                             </Trigger>
 
@@ -104,22 +102,22 @@
 
                 <!-- ПРОДОЛЖИТЬ -->
                 <Button Name="ContinueButton"
-                        Content="Продолжить игру"
-                        Width="320"
-                        Height="65"
-                        FontSize="24"
-                        FontFamily="Oswald"
-                        Margin="0,10"
-                        Click="ContinueButton_Click"
-                        Cursor="Hand">
+                Width="320"
+                Height="110"
+                Background="Transparent"
+                BorderThickness="0"
+                Click="ContinueButton_Click"
+                Cursor="Hand"
+                Margin="0,10,0,-10"
+                RenderTransformOrigin="0.5,0.5">        
+
+                    <Button.RenderTransform>
+                        <ScaleTransform/>
+                    </Button.RenderTransform>
 
                     <Button.Style>
 
                         <Style TargetType="Button">
-
-                            <Setter Property="Background" Value="#66FFFFFF"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="#222222"/>
 
                             <Setter Property="Template">
 
@@ -127,25 +125,29 @@
 
                                     <ControlTemplate TargetType="Button">
 
-                                        <Border x:Name="border"
-                                                Background="{TemplateBinding Background}"
-                                                CornerRadius="18">
+                                        <Grid>
 
-                                            <ContentPresenter HorizontalAlignment="Center"
-                                                              VerticalAlignment="Center"/>
+                                            <Image x:Name="bg"
+                                   Source="Images/Button.png"
+                                   Stretch="Fill" Margin="0,10,0,0"/>
 
-                                        </Border>
+                                            <TextBlock Text="Продолжить игру"
+                                       FontFamily="./Fonts/#Hardpixel"
+                                       FontSize="32"
+                                       Foreground="#FFF8DC"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                                        </Grid>
 
                                         <ControlTemplate.Triggers>
 
-                                            <Trigger Property="IsMouseOver" Value="True">
+                                            <Trigger Property="IsMouseOver"
+                                     Value="True">
 
-                                                <Setter TargetName="border"
-                                                        Property="Background"
-                                                        Value="#99FFFFFF"/>
-
-                                                <Setter Property="FontSize"
-                                                        Value="27"/>
+                                                <Setter TargetName="bg"
+                                        Property="Opacity"
+                                        Value="0.85"/>
 
                                             </Trigger>
 
@@ -165,7 +167,7 @@
 
                 <!-- ПАПКА -->
                 <TextBlock Text="Папка сохранений"
-                           FontFamily="Oswald"
+                           FontFamily="./Fonts/#Hardpixel"
                            FontSize="18"
                            Margin="0,30,0,5"
                            HorizontalAlignment="Center"/>
@@ -175,7 +177,7 @@
 
                     <TextBox Name="SaveFolderTextBox"
                              Width="240"
-                             Height="35"
+                             Height="26"
                              FontSize="14"
                              IsReadOnly="True"/>
 
@@ -190,10 +192,10 @@
 
                 <!-- ФОРМАТ -->
                 <TextBlock Text="Формат сохранения"
-                           FontFamily="Oswald"
+                          FontFamily="./Fonts/#Hardpixel"
                            FontSize="18"
                            Margin="0,20,0,5"
-                           HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center" Height="21"/>
 
                 <ComboBox Grid.Row="5"
                           Grid.Column="1"
