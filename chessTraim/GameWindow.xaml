@@ -67,15 +67,29 @@
 
         <!-- ДОСКА -->
         <Viewbox Grid.Row="1"
-                 Stretch="Uniform">
+         Stretch="Uniform">
 
-            <Grid Width="800"
-                  Height="800">
+            <Grid Width="1800"
+          Height="900">
 
-                <Grid Name="ChessBoardGrid"
-                      Background="Transparent"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch">
+                <!-- ФОН -->
+                <Image Source="Images/BackBack.png"
+               Stretch="Fill"/>
+
+                <!-- ДОСКА -->
+                <Grid Width="650"
+              Height="650"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+
+                    <Grid Name="ChessBoardGrid"/>
+
+                    <!-- ТЕКСТУРА -->
+                    <Image Source="Images/Texture.png"
+                   Stretch="Fill"
+                   Opacity="0.35"
+                   IsHitTestVisible="False" Margin="-452,-85,-458,-103"/>
+
                 </Grid>
 
             </Grid>
