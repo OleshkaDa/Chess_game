@@ -13,6 +13,12 @@ namespace Model.Core.Pieces
 
         public override bool CanMoveTo(int newRow, int newCol, IPiece[,] board)
         {
+            if (newRow == Position.Row &&
+                newCol == Position.Col)
+            {
+                return false;
+            }
+
             int rowDifference = Math.Abs(newRow - Position.Row);
             int colDifference = Math.Abs(newCol - Position.Col);
 

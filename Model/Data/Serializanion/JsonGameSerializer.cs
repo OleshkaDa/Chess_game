@@ -155,221 +155,72 @@ namespace Model.Data.Serialization
         }
     }
 
-    // Конвертер для сериализации фигур
-    public class PieceConverter : JsonConverter<IPiece>
-    {
-        public override IPiece Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            JsonDocument doc = JsonDocument.ParseValue(ref reader);
+    // Конвертер не нужный оставила на всякий случай потому что не помню зачем писала его в 1 варианте кода, но может он мне еще понадобится для чего-то другого
+    //public class PieceConverter : JsonConverter<IPiece>
+    //{
+    //    public override IPiece Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    //    {
+    //        JsonDocument doc = JsonDocument.ParseValue(ref reader);
 
-            JsonElement root = doc.RootElement;
+    //        JsonElement root = doc.RootElement;
 
-            string type = root.GetProperty("PieceType").GetString();
+    //        string type = root.GetProperty("PieceType").GetString();
 
-            int row = root.GetProperty("Row").GetInt32();
+    //        int row = root.GetProperty("Row").GetInt32();
 
-            int col = root.GetProperty("Col").GetInt32();
+    //        int col = root.GetProperty("Col").GetInt32();
 
-            string color = root.GetProperty("Color").GetString();
+    //        string color = root.GetProperty("Color").GetString();
 
-            PieceColor pieceColor;
+    //        PieceColor pieceColor;
 
-            if (color == "White")
-            {
-                pieceColor = PieceColor.White;
-            }
-            else
-            {
-                pieceColor = PieceColor.Black;
-            }
+    //        if (color == "White")
+    //        {
+    //            pieceColor = PieceColor.White;
+    //        }
+    //        else
+    //        {
+    //            pieceColor = PieceColor.Black;
+    //        }
 
-            switch (type)
-            {
-                case "Pawn":
-                    return new Pawn(row, col, pieceColor);
+    //        switch (type)
+    //        {
+    //            case "Pawn":
+    //                return new Pawn(row, col, pieceColor);
 
-                case "Rook":
-                    return new Rook(row, col, pieceColor);
+    //            case "Rook":
+    //                return new Rook(row, col, pieceColor);
 
-                case "Knight":
-                    return new Knight(row, col, pieceColor);
+    //            case "Knight":
+    //                return new Knight(row, col, pieceColor);
 
-                case "Bishop":
-                    return new Bishop(row, col, pieceColor);
+    //            case "Bishop":
+    //                return new Bishop(row, col, pieceColor);
 
-                case "Queen":
-                    return new Queen(row, col, pieceColor);
+    //            case "Queen":
+    //                return new Queen(row, col, pieceColor);
 
-                case "King":
-                    return new King(row, col, pieceColor);
+    //            case "King":
+    //                return new King(row, col, pieceColor);
 
-                default:
-                    throw new Exception("Unknown piece");
-            }
-        }
+    //            default:
+    //                throw new Exception("Unknown piece");
+    //        }
+    //    }
 
-        public override void Write(Utf8JsonWriter writer, IPiece value, JsonSerializerOptions options)
-        {
-            writer.WriteStartObject();
+    //    public override void Write(Utf8JsonWriter writer, IPiece value, JsonSerializerOptions options)
+    //    {
+    //        writer.WriteStartObject();
 
-            writer.WriteString("PieceType", value.GetType().Name);
+    //        writer.WriteString("PieceType", value.GetType().Name);
 
-            writer.WriteNumber("Row", value.Position.Row);
+    //        writer.WriteNumber("Row", value.Position.Row);
 
-            writer.WriteNumber("Col", value.Position.Col);
+    //        writer.WriteNumber("Col", value.Position.Col);
 
-            writer.WriteString("Color", value.Color.ToString());
+    //        writer.WriteString("Color", value.Color.ToString());
 
-            writer.WriteEndObject();
-        }
-    }
+    //        writer.WriteEndObject();
+    //    }
+    //}
 }
-
-//using System.Text.Json;
-//using System.Text.Json.Serialization;
-//using Model.Core.GameLogic;
-//using Model.Core.Pieces;
-//using Model.Core.Interfaces;
-
-//namespace Model.Data.Serialization
-//{
-//    public class JsonGameSerializer : GameSerializerBase
-//    {
-//        public override void Save(GameState game, string filePath)
-//        {
-//            var saveData = new SaveData
-//            {
-//                CurrentTurn = game.CurrentTurn.ToString(),
-//                IsGameOver = game.IsGameOver,
-//                Winner = game.Winner
-//            };
-
-//            for (int row = 0; row < 8; row++)
-//            {
-//                for (int col = 0; col < 8; col++)
-//                {
-//                    var piece = game.Board[row, col];
-
-//                    if (piece != null)
-//                    {
-//                        saveData.Pieces.Add(new PieceData
-//                        {
-//                            Row = row,
-//                            Col = col,
-//                            Type = piece.GetType().Name,
-//                            Color = piece.Color.ToString()
-//                        });
-//                    }
-//                }
-//            }
-
-//            var options = new JsonSerializerOptions
-//            {
-//                WriteIndented = true
-//            };
-
-//            string json = JsonSerializer.Serialize(saveData, options);
-
-//            File.WriteAllText(filePath, json);
-//        }
-
-//        public override GameState Load(string filePath)
-//        {
-//            string json = File.ReadAllText(filePath);
-
-//            var saveData = JsonSerializer.Deserialize<SaveData>(json);
-
-//            if (saveData == null)
-//                return new GameState();
-
-//            var game = new GameState();
-
-//            game.Board = new IPiece[8, 8];
-
-//            foreach (var pieceData in saveData.Pieces)
-//            {
-//                PieceColor color =
-//                    pieceData.Color == "White"
-//                    ? PieceColor.White
-//                    : PieceColor.Black;
-
-//                IPiece piece = pieceData.Type switch
-//                {
-//                    "Pawn" => new Pawn(pieceData.Row, pieceData.Col, color),
-//                    "Rook" => new Rook(pieceData.Row, pieceData.Col, color),
-//                    "Knight" => new Knight(pieceData.Row, pieceData.Col, color),
-//                    "Bishop" => new Bishop(pieceData.Row, pieceData.Col, color),
-//                    "Queen" => new Queen(pieceData.Row, pieceData.Col, color),
-//                    "King" => new King(pieceData.Row, pieceData.Col, color),
-//                    _ => throw new Exception("Unknown piece")
-//                };
-
-//                game.Board[pieceData.Row, pieceData.Col] = piece;
-//            }
-
-//            game.CurrentTurn =
-//                saveData.CurrentTurn == "White"
-//                ? PieceColor.White
-//                : PieceColor.Black;
-
-//            game.IsGameOver = saveData.IsGameOver;
-//            game.Winner = saveData.Winner;
-
-//            return game;
-//        }
-
-//        public override bool Validate(string filePath)
-//        {
-//            try
-//            {
-//                var json = File.ReadAllText(filePath);
-
-//                var data = JsonSerializer.Deserialize<SaveData>(json);
-
-//                return data != null && data.Pieces.Count > 0;
-//            }
-//            catch
-//            {
-//                return false;
-//            }
-//        }
-//    }
-
-//    // Конвертер для сериализации фигур
-//    public class PieceConverter : JsonConverter<IPiece>
-//    {
-//        public override IPiece Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-//        {
-//            using var doc = JsonDocument.ParseValue(ref reader);
-//            var root = doc.RootElement;
-
-//            var type = root.GetProperty("PieceType").GetString();
-//            var row = root.GetProperty("Row").GetInt32();
-//            var col = root.GetProperty("Col").GetInt32();
-//            var color = root.GetProperty("Color").GetString();
-
-//            PieceColor pieceColor = color == "White" ? PieceColor.White : PieceColor.Black;
-
-//            return type switch
-//            {
-//                "Pawn" => new Pawn(row, col, pieceColor),
-//                "Rook" => new Rook(row, col, pieceColor),
-//                "Knight" => new Knight(row, col, pieceColor),
-//                "Bishop" => new Bishop(row, col, pieceColor),
-//                "Queen" => new Queen(row, col, pieceColor),
-//                "King" => new King(row, col, pieceColor),
-//                _ => throw new NotSupportedException($"Unknown piece type: {type}")
-//            };
-//        }
-
-//        public override void Write(Utf8JsonWriter writer, IPiece value, JsonSerializerOptions options)
-//        {
-//            writer.WriteStartObject();
-//            writer.WriteString("PieceType", value.GetType().Name);
-//            writer.WriteNumber("Row", value.Position.Row);
-//            writer.WriteNumber("Col", value.Position.Col);
-//            writer.WriteString("Color", value.Color.ToString());
-//            writer.WriteEndObject();
-//        }
-//    }
-//}

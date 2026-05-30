@@ -27,12 +27,27 @@ namespace chessTraim
             new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A0522D"));
         private readonly Brush HighlightBrush = new SolidColorBrush(Color.FromRgb(120, 200, 120));
 
+
+        //делегат несчастный я не придумала куда ещё впихнуть
+        private readonly Action<string> ShowGameMessage;
+
         public GameWindow(GameState game, string saveFilePath, GameSerializerBase serializer)
         {
             InitializeComponent();
+
+            ShowGameMessage = message =>
+            {
+                MessageBox.Show(
+                    message,
+                    "Информация",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            };
+
             _game = game;
             _saveFilePath = saveFilePath;
             _serializer = serializer;
+
             InitializeBoard();
             UpdateBoard();
             UpdateUI();
@@ -108,7 +123,7 @@ namespace chessTraim
 
             IPiece piece = _game.Board[row, col];
 
-            // Ничего не выбрано
+            // ничего не выбрано
             if (_selectedPosition == null)
             {
                 if (piece != null)
@@ -126,7 +141,7 @@ namespace chessTraim
                 return;
             }
 
-            // Проверка что позиция ещё существует
+            //проверка что позиция ещё существует
             if (_selectedPosition == null)
             {
                 return;
@@ -150,7 +165,7 @@ namespace chessTraim
                 return;
             }
 
-            // Перевыбор своей фигуры
+            // перевыбор своей фигуры
             if (piece != null)
             {
                 if (piece.Color == _game.CurrentTurn)
@@ -167,14 +182,30 @@ namespace chessTraim
 
             bool moved = false;
 
+            //try
+            //{
+            //    moved = _game.TryMove(fromRow, fromCol, row, col);
+            //}
+            //catch
+            //{
+            //    _selectedButton = null;
+
+            //    _selectedPosition = null;
+
+            //    ClearHighlights();
+
+            //    return;
+            //}
+
             try
             {
                 moved = _game.TryMove(fromRow, fromCol, row, col);
             }
-            catch
+            catch (Exception ex)
             {
-                _selectedButton = null;
+                MessageBox.Show(ex.ToString());
 
+                _selectedButton = null;
                 _selectedPosition = null;
 
                 ClearHighlights();
@@ -494,71 +525,7 @@ namespace chessTraim
                         : "King_b.png";
                     break;
             }
-            //switch (piece.GetType().Name)
-            //{
-            //    case "Pawn":
-            //        fileName = color == "white"
-            //            ? "WhitePawn.png"
-            //            : "BlackPawn.png";
-            //        break;
-
-            //    case "Rook":
-            //        fileName = color == "white"
-            //            ? "WhiteRook.png"
-            //            : "BlackRook.png";
-            //        break;
-
-            //    case "Knight":
-            //        fileName = color == "white"
-            //            ? "WhiteKnight.png"
-            //            : "BlackKnight.png";
-            //        break;
-
-            //    case "Bishop":
-            //        fileName = color == "white"
-            //            ? "WhiteBishop.png"
-            //            : "BlackBishop.png";
-            //        break;
-
-            //    case "Queen":
-            //        fileName = color == "white"
-            //            ? "WhiteQueen.png"
-            //            : "BlackQueen.png";
-            //        break;
-
-            //    case "King":
-            //        fileName = color == "white"
-            //            ? "WhiteKing.png"
-            //            : "BlackKing.png";
-            //        break;
-            //}
-
-            //switch (piece.GetType().Name)
-            //{
-            //    case "Pawn":
-            //        fileName = "chess-pawn-" + color + ".png";
-            //        break;
-
-            //    case "Rook":
-            //        fileName = "chess-rook-" + color + ".png";
-            //        break;
-
-            //    case "Knight":
-            //        fileName = "chess-knight-" + color + ".png";
-            //        break;
-
-            //    case "Bishop":
-            //        fileName = "chess-bishop-" + color + ".png";
-            //        break;
-
-            //    case "Queen":
-            //        fileName = "chess-queen-" + color + ".png";
-            //        break;
-
-            //    case "King":
-            //        fileName = "chess-king-" + color + ".png";
-            //        break;
-            //}
+           
 
             Image image = new Image();
 
@@ -593,31 +560,44 @@ namespace chessTraim
             try
             {
                 string extension =
-    _serializer is JsonGameSerializer ? ".json" : ".xml";
+                    _serializer is JsonGameSerializer ? ".json" : ".xml";
 
                 string fileName =
                     $"chess_save_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}{extension}";
 
-                _saveFilePath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    "ChessSaves",
-                    fileName);
+                string saveFolder =
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                if (Owner is MainWindow main)
+                {
+                    saveFolder = main.SaveFolderPath;
+                }
+
+                if (!Directory.Exists(saveFolder))
+                {
+                    Directory.CreateDirectory(saveFolder);
+                }
+
+                _saveFilePath = Path.Combine(saveFolder, fileName);
+
                 _serializer.Save(_game, _saveFilePath);
 
                 Owner?.Activate();
 
-                if (Owner is MainWindow main)
+                if (Owner is MainWindow mainWindow)
                 {
-                    main.CheckContinueButtonState();
+                    mainWindow.CheckContinueButtonState();
                 }
 
-                MessageBox.Show("Игра сохранена!", "Сохранение",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
+                ShowGameMessage("Игра сохранена!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка",
-                                MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    $"Ошибка сохранения: {ex.Message}",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 

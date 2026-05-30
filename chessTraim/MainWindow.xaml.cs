@@ -14,6 +14,14 @@ namespace chessTraim
         private GameSerializerBase? _serializer;
         private GameState? _currentGame;
 
+        public string SaveFolderPath
+        {
+            get
+            {
+                return SaveFolderTextBox.Text;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -45,6 +53,20 @@ namespace chessTraim
         private void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
             _currentGame = new GameState();
+
+            string format =
+                (FormatComboBox.SelectedItem as ComboBoxItem)?
+                .Content.ToString() ?? "JSON";
+
+            string extension =
+                format == "JSON"
+                ? ".json"
+                : ".xml";
+
+            _saveFilePath = Path.Combine(
+                SaveFolderTextBox.Text,
+                $"autosave_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}{extension}");
+
             OpenGameWindow();
         }
 
@@ -80,7 +102,7 @@ namespace chessTraim
                     }
                     else
                     {
-                        ErrorTextBlock.Text = "Файл повреждён";
+                        ErrorTextBlock.Text = "Файл повреждён или не соответствует";
                     }
                 }
             }
@@ -105,6 +127,150 @@ namespace chessTraim
 
             ContinueButton.IsEnabled = hasSaves;
         }
+
+        private void ConvertSaveToNewFormat(string newFormat)
+        {
+            if (string.IsNullOrWhiteSpace(_saveFilePath))
+            {
+                return;
+            }
+
+            if (!File.Exists(_saveFilePath))
+            {
+                return;
+            }
+
+            GameSerializerBase oldSerializer;
+
+            if (_saveFilePath.EndsWith(".json"))
+            {
+                oldSerializer = new JsonGameSerializer();
+            }
+            else
+            {
+                oldSerializer = new XmlGameSerializer();
+            }
+
+            GameState game =
+                oldSerializer.Load(_saveFilePath);
+
+            GameSerializerBase newSerializer;
+
+            string newExtension;
+
+            if (newFormat == "JSON")
+            {
+                newSerializer = new JsonGameSerializer();
+                newExtension = ".json";
+            }
+            else
+            {
+                newSerializer = new XmlGameSerializer();
+                newExtension = ".xml";
+            }
+
+            string newFilePath =
+                Path.ChangeExtension(
+                    _saveFilePath,
+                    newExtension);
+
+            newSerializer.Save(
+                game,
+                newFilePath);
+
+            File.Delete(_saveFilePath);
+
+            _saveFilePath = newFilePath;
+        }
+        private void FormatComboBox_SelectionChanged(object sender,SelectionChangedEventArgs e)
+        {
+            try
+            {
+                string selectedFormat =
+                    (FormatComboBox.SelectedItem as ComboBoxItem)?
+                    .Content.ToString() ?? "JSON";
+
+                ConvertSaveToNewFormat(
+                    selectedFormat);
+            }
+            catch
+            {
+            }
+        }
+
+        //private void FormatComboBox_SelectionChanged(object sender,SelectionChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (_currentGame == null)
+        //        {
+        //            return;
+        //        }
+
+        //        if (string.IsNullOrWhiteSpace(_saveFilePath))
+        //        {
+        //            return;
+        //        }
+
+        //        if (!File.Exists(_saveFilePath))
+        //        {
+        //            return;
+        //        }
+
+        //        string selectedFormat =
+        //            (FormatComboBox.SelectedItem as ComboBoxItem)?
+        //            .Content.ToString() ?? "JSON";
+
+        //        string newExtension =
+        //            selectedFormat == "JSON"
+        //            ? ".json"
+        //            : ".xml";
+
+        //        // уже нужный формат
+        //        if (Path.GetExtension(_saveFilePath)
+        //            .Equals(newExtension,
+        //                    StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            return;
+        //        }
+
+        //        // определяем текущий сериализатор
+        //        GameSerializerBase oldSerializer;
+
+        //        if (_saveFilePath.EndsWith(".json"))
+        //        {
+        //            oldSerializer = new JsonGameSerializer();
+        //        }
+        //        else
+        //        {
+        //            oldSerializer = new XmlGameSerializer();
+        //        }
+
+        //        // загружаем текущее сохранение
+        //        GameState game = oldSerializer.Load(_saveFilePath);
+
+        //        // создаём новый сериализатор
+        //        GameSerializerBase newSerializer;
+
+        //        if (selectedFormat == "JSON")
+        //        {
+        //            newSerializer = new JsonGameSerializer();
+        //        }
+        //        else
+        //        {
+        //            newSerializer = new XmlGameSerializer();
+        //        }
+
+        //        string newFilePath =Path.ChangeExtension(_saveFilePath, newExtension);
+        //        newSerializer.Save(game,newFilePath);
+        //        _saveFilePath = newFilePath;
+        //    }
+        //    catch
+        //    {
+                
+        //    }
+        //}
+
 
         private void OpenGameWindow()
         {
@@ -134,5 +300,6 @@ namespace chessTraim
 
             CheckContinueButtonState();
         }
+
     }
 }

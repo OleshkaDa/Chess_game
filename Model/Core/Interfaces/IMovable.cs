@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+//методы перемещения.
 namespace Model.Core.Interfaces
 {
     public interface IMovable
