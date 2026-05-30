@@ -22,9 +22,7 @@ namespace Model.Core.Pieces
                 Position.Row == newRow ||
                 Position.Col == newCol;
 
-            bool likeBishop =
-                Math.Abs(newRow - Position.Row) ==
-                Math.Abs(newCol - Position.Col);
+            bool likeBishop = Math.Abs(newRow - Position.Row) == Math.Abs(newCol - Position.Col);
 
             if (!likeRook && !likeBishop)
             {

@@ -87,9 +87,7 @@ namespace Model.Core.GameLogic
 
             Board[move.FromRow, move.FromCol] = null;
 
-            move.Piece.Move(
-                move.ToRow,
-                move.ToCol);
+            move.Piece.Move(move.ToRow,move.ToCol);
 
             if (CurrentTurn == PieceColor.White)
             {
@@ -158,14 +156,7 @@ namespace Model.Core.GameLogic
 
                     return true;
                 }
-                    Move move = new Move(
-                        fromRow,
-                        fromCol,
-                        toRow,
-                        toCol,
-                        piece,
-                        Board[toRow, toCol]
-                    );
+                    Move move = new Move(fromRow,fromCol,toRow,toCol,piece,Board[toRow, toCol]);
 
                 return TryMove(move);
             }

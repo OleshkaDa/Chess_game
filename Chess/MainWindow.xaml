@@ -1,0 +1,230 @@
+﻿<Window x:Class="chessTraim.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Шахматы"
+        Height="650"
+        Width="1000"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#202020">
+
+    <Grid>
+
+        <!-- ФОН -->
+        <Grid.Background>
+
+            <ImageBrush ImageSource="Images/Background.png"
+                        Stretch="UniformToFill"
+                        Opacity="0.20"/>
+
+        </Grid.Background>
+
+        <!-- ЦЕНТРАЛЬНАЯ ПАНЕЛЬ -->
+        <Border Width="500"
+                Height="500"
+                Background="#DEB887"
+                CornerRadius="25"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+                <!-- ЗАГОЛОВОК -->
+                <TextBlock Text="ШАХМАТЫ"
+                           FontSize="48"
+                           FontWeight="Bold"
+                           FontFamily="./Fonts/Hardpixel.OTF#Hardpixel"
+                           Foreground="#222222"
+                           Margin="0,20,0,10"
+                           HorizontalAlignment="Center" RenderTransformOrigin="0.5,1.056" Height="58"/>
+
+                <!-- НОВАЯ ИГРА -->
+                <Button Name="NewGameButton"
+                        Content="Новая игра"
+                        Width="320"
+                        Height="90"
+                        FontSize="24"
+                        FontFamily="./Fonts/#Hardpixel"
+                        Margin="0,10,0,-10"
+                        Click="NewGameButton_Click"
+                        Cursor="Hand" RenderTransformOrigin="0.502,0.896">
+
+                    <Button.Style>
+
+                        <Style TargetType="Button">
+
+                            <Setter Property="Template">
+
+                                <Setter.Value>
+
+                                    <ControlTemplate TargetType="Button">
+
+                                        <Grid>
+
+                                            <Image x:Name="bg"
+                                   Source="Images/Button.png"
+                                   Stretch="Fill"/>
+
+                                            <TextBlock Text="Играть"
+                                       FontFamily="./Fonts/Hardpixel.OTF#Hardpixel"
+                                       FontSize="32"
+                                       Foreground="#F5D7A1"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                                        </Grid>
+
+                                        <ControlTemplate.Triggers>
+
+                                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+
+                                                <Setter TargetName="bg"
+                                        Property="Opacity"
+                                        Value="0.85"/>
+
+                                            </Trigger>
+
+                                        </ControlTemplate.Triggers>
+
+                                    </ControlTemplate>
+
+                                </Setter.Value>
+
+                            </Setter>
+
+                        </Style>
+
+                    </Button.Style>
+
+                </Button>
+
+                <!-- ПРОДОЛЖИТЬ -->
+                <Button Name="ContinueButton"
+                Width="320"
+                Height="110"
+                Background="Transparent"
+                BorderThickness="0"
+                Click="ContinueButton_Click"
+                Cursor="Hand"
+                Margin="0,10,0,-10"
+                RenderTransformOrigin="0.5,0.5">        
+
+                    <Button.RenderTransform>
+                        <ScaleTransform/>
+                    </Button.RenderTransform>
+
+                    <Button.Style>
+
+                        <Style TargetType="Button">
+
+                            <Setter Property="Template">
+
+                                <Setter.Value>
+
+                                    <ControlTemplate TargetType="Button">
+
+                                        <Grid>
+
+                                            <Image x:Name="bg"
+                                   Source="Images/Button.png"
+                                   Stretch="Fill" Margin="0,10,0,0"/>
+
+                                            <TextBlock Text="Продолжить игру"
+                                       FontFamily="./Fonts/#Hardpixel"
+                                       FontSize="32"
+                                       Foreground="#FFF8DC"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                                        </Grid>
+
+                                        <ControlTemplate.Triggers>
+
+                                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+
+                                                <Setter TargetName="bg"
+                                        Property="Opacity"
+                                        Value="0.85"/>
+
+                                            </Trigger>
+
+                                        </ControlTemplate.Triggers>
+
+                                    </ControlTemplate>
+
+                                </Setter.Value>
+
+                            </Setter>
+
+                        </Style>
+
+                    </Button.Style>
+
+                </Button>
+
+                <!-- ПАПКА -->
+                <TextBlock Text="Папка сохранений"
+                           FontFamily="./Fonts/#Hardpixel"
+                           FontSize="18"
+                           Margin="0,30,0,5"
+                           HorizontalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+
+                    <TextBox Name="SaveFolderTextBox"
+                             Width="240"
+                             Height="26"
+                             FontSize="14"
+                             IsReadOnly="True"/>
+
+                    <Button Name="BrowseFolderButton"
+                            Content="..."
+                            Width="40"
+                            Height="35"
+                            Margin="10,0,0,0"
+                            Click="BrowseFolderButton_Click"/>
+
+                </StackPanel>
+
+                <!-- ФОРМАТ -->
+                <TextBlock Text="Формат сохранения"
+                          FontFamily="./Fonts/#Hardpixel"
+                           FontSize="18"
+                           Margin="0,20,0,5"
+                           HorizontalAlignment="Center" Height="21"/>
+
+                <ComboBox Grid.Row="5"
+                      Grid.Column="1"
+                      Name="FormatComboBox"
+                      Width="150"
+                      Height="35"
+                      FontSize="16"
+                      SelectionChanged="FormatComboBox_SelectionChanged">
+   
+
+                    <ComboBoxItem Content="JSON"
+                                  IsSelected="True"/>
+
+                    <ComboBoxItem Content="XML"/>
+
+                </ComboBox>
+
+                <!-- ОШИБКИ -->
+                <TextBlock Name="ErrorTextBlock"
+                           Foreground="Red"
+                           FontSize="14"
+                           Margin="0,20,0,0"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"/>
+
+            </StackPanel>
+
+        </Border>
+
+    </Grid>
+
+</Window>

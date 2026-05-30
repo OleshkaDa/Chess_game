@@ -83,19 +83,19 @@ namespace Model.Data.Serialization
 
                 foreach (var pieceData in data.Pieces)
                 {
-                    IPiece piece = CreatePiece(
-                        pieceData.Type,
-                        pieceData.Color,
-                        pieceData.Row,
-                        pieceData.Col);
+                    IPiece piece = CreatePiece(pieceData.Type, pieceData.Color,  pieceData.Row,pieceData.Col);
 
                     game.Board[pieceData.Row, pieceData.Col] = piece;
                 }
 
-                game.CurrentTurn =
-                    data.CurrentTurn == "White"
-                    ? PieceColor.White
-                    : PieceColor.Black;
+                if (data.CurrentTurn == "White")
+                {
+                    game.CurrentTurn = PieceColor.White;
+                }
+                else
+                {
+                    game.CurrentTurn = PieceColor.Black;
+                }
 
                 game.IsGameOver = data.IsGameOver;
                 game.Winner = data.Winner;
@@ -108,12 +108,10 @@ namespace Model.Data.Serialization
         {
             try
             {
-                using (var reader = new StreamReader(filePath))
+                using (StreamReader reader = new StreamReader(filePath))
                 {
-                    SaveData data =
-                        _serializer.Deserialize(reader) as SaveData;
-
-                    return data != null;
+                    SaveData data = (SaveData)_serializer.Deserialize(reader);
+                    return true;
                 }
             }
             catch

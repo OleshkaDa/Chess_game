@@ -15,7 +15,7 @@ namespace Model.Core.GameLogic
         public int ToRow { get; set; }
         public int ToCol { get; set; }
         public IPiece Piece { get; set; }
-        public IPiece? CapturedPiece { get; set; }
+        public IPiece CapturedPiece { get; set; }
 
         public Move(int fromRow, int fromCol, int toRow, int toCol, IPiece piece, IPiece? capturedPiece)
         {

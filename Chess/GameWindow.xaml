@@ -1,0 +1,184 @@
+<Window x:Class="chessTraim.GameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Шахматы"
+        Height="700"
+        Width="1000"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterOwner"
+        Background="Black"
+        Closing="GameWindow_Closing">
+
+    <Grid>
+
+        <!-- ФОН -->
+        <Grid.Background>
+
+            <DrawingBrush>
+
+                <DrawingBrush.Drawing>
+
+                    <DrawingGroup>
+
+                        <ImageDrawing ImageSource="Images/Background.png"
+                                      Rect="0,0,1,1"/>
+
+                        <GeometryDrawing Brush="#99000000">
+
+                            <GeometryDrawing.Geometry>
+
+                                <RectangleGeometry Rect="0,0,1,1"/>
+
+                            </GeometryDrawing.Geometry>
+
+                        </GeometryDrawing>
+
+                    </DrawingGroup>
+
+                </DrawingBrush.Drawing>
+
+            </DrawingBrush>
+
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+
+        <!-- ВЕРХ -->
+        <Grid Grid.Row="0"
+              HorizontalAlignment="Center"
+              Margin="20">
+
+            <Image Source="Images/Turn.png" Margin="-22,-184,0,-207" RenderTransformOrigin="0.556,0.28" HorizontalAlignment="Left" Width="954"/>
+
+            <TextBlock Name="TurnTextBlock"
+                       FontFamily="./Fonts/#Hardpixel"
+                       FontSize="38"
+                       Foreground="#F5D7A1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+        </Grid>
+
+        <!-- ДОСКА -->
+        <Viewbox Grid.Row="1"
+         Stretch="Uniform">
+
+            <Grid Width="1800"
+          Height="900">
+
+                <!-- ФОН -->
+                <Image Source="Images/BackBack.png"
+               Stretch="Fill"/>
+
+                <!-- ДОСКА -->
+                <Grid Width="650"
+              Height="650"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+
+                    <Grid Name="ChessBoardGrid"/>
+
+                    <!-- ТЕКСТУРА -->
+                    <Image Source="Images/Texture.png"
+                   Stretch="Fill"
+                   Opacity="0.35"
+                   IsHitTestVisible="False" Margin="-452,-85,-458,-103"/>
+
+                </Grid>
+
+            </Grid>
+
+        </Viewbox>
+
+        <!-- КНОПКИ -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="20">
+
+            <!-- UNDO -->
+            <Button Name="UndoButton"
+                    Width="273"
+                    Height="144"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="UndoButton_Click"
+                    Cursor="Hand"
+                    Margin="10">
+
+                <Grid>
+
+                    <Image Source="Images/Button.png"/>
+
+                    <TextBlock
+                               FontFamily="./Fonts/#Hardpixel"
+                               FontSize="30"
+                               Foreground="#F5D7A1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" TextAlignment="Center"><Run Language="ru-ru" Text="Отменить"/><LineBreak/><Run Language="ru-ru" Text="ход"/></TextBlock>
+
+                </Grid>
+
+            </Button>
+
+            <!-- SAVE -->
+            <Button Name="SaveButton"
+                    Width="297"
+                    Height="144"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="SaveButton_Click"
+                    Cursor="Hand"
+                    Margin="10">
+
+                <Grid>
+
+                    <Image Source="Images/Button.png"/>
+
+                    <TextBlock
+                               FontFamily="./Fonts/#Hardpixel"
+                               FontSize="30"
+                               Foreground="#F5D7A1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"><Run Language="ru-ru" Text="Сохранить"/></TextBlock>
+
+                </Grid>
+
+            </Button>
+
+            <!-- EXIT -->
+            <Button Name="ExitButton"
+                    Width="250"
+                    Height="157"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="ExitButton_Click"
+                    Cursor="Hand"
+                    Margin="10">
+
+                <Grid>
+
+                    <Image Source="Images/Button.png"/>
+
+                    <TextBlock
+                               FontFamily="./Fonts/#Hardpixel"
+                               FontSize="30"
+                               Foreground="#F5D7A1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"><Run Language="ru-ru" Text="Выход"/></TextBlock>
+
+                </Grid>
+
+            </Button>
+
+        </StackPanel>
+
+    </Grid>
+
+</Window>

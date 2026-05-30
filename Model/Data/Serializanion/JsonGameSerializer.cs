@@ -156,6 +156,7 @@ namespace Model.Data.Serialization
     }
 
     // Конвертер не нужный оставила на всякий случай потому что не помню зачем писала его в 1 варианте кода, но может он мне еще понадобится для чего-то другого
+
     //public class PieceConverter : JsonConverter<IPiece>
     //{
     //    public override IPiece Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

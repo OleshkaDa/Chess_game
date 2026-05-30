@@ -21,16 +21,16 @@ namespace Model.Core.Pieces
             int direction = Color == PieceColor.White ? -1 : 1;
             int startRow = Color == PieceColor.White ? 6 : 1;
 
-            // Ход на 1 клетку вперёд
+            //ход на 1 клетку вперёд
             if (newCol == Position.Col && newRow == Position.Row + direction && board[newRow, newCol] == null)
                 return true;
 
-            // Ход на 2 клетки с начальной позиции
+            // зод на 2 клетки с начальной позиции
             if (newCol == Position.Col && newRow == Position.Row + 2 * direction &&
                 Position.Row == startRow && board[Position.Row + direction, Position.Col] == null && board[newRow, newCol] == null)
                 return true;
 
-            // Атака по диагонали
+            //атака по диагонали
             if (Math.Abs(newCol - Position.Col) == 1 && newRow == Position.Row + direction &&
                 board[newRow, newCol] != null && board[newRow, newCol].Color != Color)
                 return true;

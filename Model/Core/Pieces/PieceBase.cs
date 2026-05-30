@@ -69,13 +69,15 @@ namespace Model.Core.Pieces
             return !(a == b);
         }
 
+
+       //зачем - не помню, зачем-то
         public override bool Equals(object obj)
         {
             PieceBase piece = obj as PieceBase;
 
             return this == piece;
         }
-
+        //аналогично
         public override int GetHashCode()
         {
             return HashCode.Combine(Position, Color);
